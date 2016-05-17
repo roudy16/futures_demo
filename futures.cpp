@@ -18,7 +18,7 @@ using std::ceil; using std::sqrt;
 using std::move;
 using namespace std::chrono;
 
-constexpr uint32_t kAMOUNT = 100000;
+constexpr uint32_t kAMOUNT = 1000000;
 
 static void factorize(PrimeFactorization* out, const vector<uint32_t>& data,
                uint32_t start_ele, uint32_t num_eles) 
@@ -86,9 +86,9 @@ int main(uint32_t argc, char* argv[]) {
     auto span1 = duration_cast<duration<double>>(t3 - t2);
 
     //cout << *PrimeTable::instance() << '\n';
-    //for (uint32_t i = 0; i < kAMOUNT; i++) {
-        //cout << pf_vec0[i] << pf_vec1[i];
-    //}
+    for (uint32_t i = (kAMOUNT - 10 < kAMOUNT) ? kAMOUNT - 10 : 0; i < kAMOUNT; i++) {
+        cout << pf_vec0[i] << pf_vec1[i];
+    }
 
     cout << "8 jobs time: " << span0.count() << '\n';
     cout << "1 job time: " << span1.count() << '\n';

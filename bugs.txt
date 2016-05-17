@@ -1,0 +1,2 @@
+000: Can optimize with stride and offset
+001: 999993 and 999995 compute incorrect factorization
