@@ -1,7 +1,9 @@
 # OPEN
 000: Can optimize with stride and offset
 002: Computing proper prime table takes ~30 minutes, should compute table once
-    then load it from binary data.
+    then load it from binary data. Another idea, perhaps for a different project,
+    is to explore better prime number generating algorithms like the one found here:
+    https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 
 # CLOSED
 001: 999993 and 999995 compute incorrect factorization
