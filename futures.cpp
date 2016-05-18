@@ -63,8 +63,8 @@ void parallel_factorize(vector<PrimeFactorization> &pf,
     }
 }
 
-int main(uint32_t argc, char* argv[]) {
-    PrimeTable::init(static_cast<uint32_t>(ceil(sqrt(UINT32_MAX))));
+int main(int argc, char* argv[]) {
+    PrimeTable::init(static_cast<uint32_t>(UINT32_MAX / 2 + 1));
     vector<PrimeFactorization> pf_vec0(kAMOUNT);
     vector<PrimeFactorization> pf_vec1(kAMOUNT);
 

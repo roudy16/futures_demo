@@ -1,2 +1,8 @@
+# OPEN
 000: Can optimize with stride and offset
+002: Computing proper prime table takes ~30 minutes, should compute table once
+    then load it from binary data.
+
+# CLOSED
 001: 999993 and 999995 compute incorrect factorization
+    Prime factor table was too small, correct primes were not present in table
