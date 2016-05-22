@@ -107,18 +107,20 @@ ostream& operator<<(ostream& os, const PrimeTable& pt) {
     element_t[] elements
 */
 bool PrimeTable::saveToFile(std::string filename) const {
-    bool success = true;
-    ofstream fs(filename, std::ios_base::out | std::ios_base::binary);
+    bool success = false;
+    ofstream fs;
     const size_t pt_size = m_primes.size();
     constexpr size_t element_size = sizeof(PrimeTable::Element_t);
 
     try {
+        fs.open(filename, std::ios_base::out | std::ios_base::binary);
         fs.write(reinterpret_cast<const char*>(&pt_size), sizeof(size_t));
         fs.write(reinterpret_cast<const char*>(&element_size), sizeof(size_t));
         fs.write(reinterpret_cast<const char*>(m_primes.data()), pt_size * element_size);
+        success = true;
     }
     catch (...) {
-        success = false;
+        // TODO do something here if needed
     }
 
     fs.close();

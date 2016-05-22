@@ -5,7 +5,12 @@
 #include <memory>
 #include <string>
 
-constexpr char* kPRIMETABLEBLOBNAME("primeTable.pt");
+#define STRINGIFY(x) #x
+#define CONCAT(x,y) STRINGIFY(x) ## STRINGIFY(y)
+#define DEFAULTFILENAME CONCAT(DATA_DIR, /primeTable.pt)
+
+
+constexpr char* kPRIMETABLEBLOBNAME(DEFAULTFILENAME);
 
 // A Singleton that contains an ordered container of prime numbers.
 class PrimeTable {
