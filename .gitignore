@@ -1,2 +1,4 @@
 # ignore swap files
 *.*~
+*.swp
+build/
