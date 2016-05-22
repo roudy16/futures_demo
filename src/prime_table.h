@@ -3,21 +3,36 @@
 #include <vector>
 #include <utility>
 #include <memory>
+#include <string>
 
+constexpr char* kPRIMETABLEBLOBNAME("primeTable.pt");
+
+// A Singleton that contains an ordered container of prime numbers.
 class PrimeTable {
 public:
+    using Element_t = uint32_t;
+    using PrimeContainer_t = std::vector<Element_t>;
 
     enum class CtorAlgorithm { NAIVE = 0, RESTRICTED_MEMORY_ERATOSTHENES = 1};
 
-    PrimeTable(uint32_t max_factor, CtorAlgorithm alg = CtorAlgorithm::NAIVE);
+    // Load PrimeTable From File, way way faster, should use this
+    PrimeTable(std::string filename = kPRIMETABLEBLOBNAME);
 
-    uint32_t operator[](uint32_t i) const { return m_primes[i]; }
+    // Actually calculate the primes at runtime up to max_factor using the specified algorithm
+    // pretty slow to very very slow depending on the algorithm.
+    PrimeTable(Element_t max_factor, CtorAlgorithm alg = CtorAlgorithm::NAIVE);
+
+    Element_t operator[](size_t i) const { return m_primes[i]; }
     size_t size() const { return m_primes.size(); }
-    bool contains(uint32_t val) const;
+    bool contains(Element_t val) const;
+
+    bool saveToFile(std::string filename = kPRIMETABLEBLOBNAME) const;
 
     friend std::ostream& operator<<(std::ostream& os, const PrimeTable& pt);
 
-    static void init(uint32_t max_factor);
+    // PrimeTable can be initialized from a file or computed at runtime.
+    static void init(Element_t max_factor);
+    static void init(std::string filename = kPRIMETABLEBLOBNAME);
     static PrimeTable* instance();
 
 private:
@@ -29,7 +44,6 @@ private:
     PrimeTable& operator=(const PrimeTable&) = delete;
     PrimeTable& operator=(PrimeTable&&) = delete;
 
-    std::vector<uint32_t> m_primes;
-
+    PrimeContainer_t m_primes;
     static std::shared_ptr<PrimeTable> mp_instance;
-};
+}; // PrimeTable Class
