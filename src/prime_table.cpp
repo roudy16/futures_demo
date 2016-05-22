@@ -17,7 +17,7 @@ using std::ostream; using std::cout;
 using std::to_string; using std::string;
 using std::binary_search;
 using std::make_shared; using std::shared_ptr;
-using std::ofstream;
+using std::ofstream; using std::ifstream;
 using std::runtime_error;
 using std::cout;
 using std::move;
@@ -40,8 +40,33 @@ PrimeTable* PrimeTable::instance() {
 }
 
 PrimeTable::PrimeTable(string filename) {
+    ifstream fs;
+    size_t num_elements{ 0 };
+    size_t elem_size{ 0 };
 
+    try {
+        fs.open(filename, std::ios_base::in | std::ios_base::binary);
+        if (!fs.is_open()) {
+            throw runtime_error(filename + " was not found.");
+        }
 
+        fs.read(reinterpret_cast<char*>(&num_elements), sizeof(size_t));
+        fs.read(reinterpret_cast<char*>(&elem_size), sizeof(size_t));
+
+        // ensure container has enough room
+        m_primes.resize(num_elements);
+
+        // write new data to container's data
+        fs.read(reinterpret_cast<char*>(m_primes.data()), num_elements * elem_size);
+    }
+    catch (runtime_error &e) {
+        cout << e.what() << '\n';
+    }
+    catch (...) {
+        // TODO do something here if needed
+    }
+
+    fs.close();
 }
 
 PrimeTable::PrimeTable(Element_t max_factor, CtorAlgorithm alg)

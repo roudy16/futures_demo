@@ -11,7 +11,7 @@
 #include "prime_factorization.h"
 #include "prime_table.h"
 
-using std::vector;
+using std::vector; using std::string;
 using std::future; using std::async; using std::launch;
 using std::cout;
 using std::ceil; using std::sqrt;
@@ -64,7 +64,7 @@ void parallel_factorize(vector<PrimeFactorization> &pf,
 }
 
 int main(int argc, char* argv[]) {
-    PrimeTable::init(static_cast<uint32_t>(UINT32_MAX / 2 + 1));
+    PrimeTable::init(static_cast<string>(kPRIMETABLEBLOBNAME));
     vector<PrimeFactorization> pf_vec0(kAMOUNT);
     vector<PrimeFactorization> pf_vec1(kAMOUNT);
 
@@ -92,5 +92,6 @@ int main(int argc, char* argv[]) {
 
     cout << "8 jobs time: " << span0.count() << '\n';
     cout << "1 job time: " << span1.count() << '\n';
+
     return 0;
 }

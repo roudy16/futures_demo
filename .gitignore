@@ -5,3 +5,4 @@
 # ignore stuff that gets built
 build/
 bin/
+data/
