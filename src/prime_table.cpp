@@ -9,6 +9,7 @@
 #include <utility>
 #include <fstream>
 #include <exception>
+#include <iostream>
 
 using std::vector;
 using std::ceil; using std::sqrt;
@@ -18,6 +19,7 @@ using std::binary_search;
 using std::make_shared; using std::shared_ptr;
 using std::ofstream;
 using std::runtime_error;
+using std::cout;
 using std::move;
 
 shared_ptr<PrimeTable> PrimeTable::mp_instance = nullptr;
@@ -114,10 +116,17 @@ bool PrimeTable::saveToFile(std::string filename) const {
 
     try {
         fs.open(filename, std::ios_base::out | std::ios_base::binary);
+        if (!fs.is_open()) {
+            throw runtime_error(filename + " was not found.");
+        }
+
         fs.write(reinterpret_cast<const char*>(&pt_size), sizeof(size_t));
         fs.write(reinterpret_cast<const char*>(&element_size), sizeof(size_t));
         fs.write(reinterpret_cast<const char*>(m_primes.data()), pt_size * element_size);
         success = true;
+    }
+    catch (runtime_error &e) {
+        cout << e.what() << '\n';
     }
     catch (...) {
         // TODO do something here if needed
