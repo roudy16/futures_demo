@@ -26,12 +26,12 @@ shared_ptr<PrimeTable> PrimeTable::mp_instance = nullptr;
 
 void PrimeTable::init(Element_t max_factor) {
     assert(mp_instance == nullptr && "Can only init PrimeTable once");
-    mp_instance = make_shared<PrimeTable>(max_factor);
+    mp_instance = make_shared<PrimeTable>(private_key_dummy{}, max_factor);
 }
 
 void PrimeTable::init(string filename) {
     assert(mp_instance == nullptr && "Can only init PrimeTable once");
-    mp_instance = make_shared<PrimeTable>(filename);
+    mp_instance = make_shared<PrimeTable>(private_key_dummy{}, filename);
 }
 
 PrimeTable* PrimeTable::instance() {
@@ -39,7 +39,7 @@ PrimeTable* PrimeTable::instance() {
     return mp_instance.get();
 }
 
-PrimeTable::PrimeTable(string filename) {
+PrimeTable::PrimeTable(const private_key_dummy &pkd, string filename) {
     ifstream fs;
     size_t num_elements{ 0 };
     size_t elem_size{ 0 };
@@ -69,7 +69,7 @@ PrimeTable::PrimeTable(string filename) {
     fs.close();
 }
 
-PrimeTable::PrimeTable(Element_t max_factor, CtorAlgorithm alg)
+PrimeTable::PrimeTable(const private_key_dummy &pkd, Element_t max_factor, CtorAlgorithm alg)
     : m_primes{ 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31 }
 {
     assert(max_factor > 0);

@@ -14,6 +14,10 @@ constexpr char* kPRIMETABLEBLOBNAME(DEFAULTFILENAME);
 
 // A Singleton that contains an ordered container of prime numbers.
 class PrimeTable {
+    struct private_key_dummy {
+        explicit private_key_dummy() = default;
+    };
+
 public:
     using Element_t = uint32_t;
     using PrimeContainer_t = std::vector<Element_t>;
@@ -21,11 +25,10 @@ public:
     enum class CtorAlgorithm { NAIVE = 0, RESTRICTED_MEMORY_ERATOSTHENES = 1};
 
     // Load PrimeTable From File, way way faster, should use this
-    PrimeTable(std::string filename = kPRIMETABLEBLOBNAME);
-
+    explicit PrimeTable(const private_key_dummy&, std::string filename = kPRIMETABLEBLOBNAME);
     // Actually calculate the primes at runtime up to max_factor using the specified algorithm
     // pretty slow to very very slow depending on the algorithm.
-    PrimeTable(Element_t max_factor, CtorAlgorithm alg = CtorAlgorithm::NAIVE);
+    explicit PrimeTable(const private_key_dummy&, Element_t, CtorAlgorithm alg = CtorAlgorithm::NAIVE);
 
     Element_t operator[](size_t i) const { return m_primes[i]; }
     size_t size() const { return m_primes.size(); }
