@@ -16,7 +16,7 @@ using std::ceil; using std::sqrt;
 using std::ostream; using std::cout;
 using std::to_string; using std::string;
 using std::binary_search;
-using std::make_shared; using std::shared_ptr;
+using std::make_shared; using std::shared_ptr; using std::unique_ptr; using std::make_unique;
 using std::ofstream; using std::ifstream;
 using std::runtime_error;
 using std::cout;
@@ -78,11 +78,11 @@ PrimeTable::PrimeTable(const private_key_dummy &pkd, Element_t max_factor, CtorA
 
     switch (alg) {
     case CtorAlgorithm::NAIVE:
-        for (Element_t i = 37; i <= limit; i++) {
+        for (Element_t i = 37; i <= limit; ++i) {
             const Element_t i_limit = static_cast<Element_t>(ceil(sqrt(i)));
             bool isPrime = true;
 
-            for (Element_t j = 0; j < m_primes.size(); j++) {
+            for (Element_t j = 0; j < m_primes.size(); ++j) {
                 // Don't check beyond sqrt
                 if (m_primes[j] > i_limit) {
                     break;
@@ -100,10 +100,29 @@ PrimeTable::PrimeTable(const private_key_dummy &pkd, Element_t max_factor, CtorA
             }
         }
         break;
-
     case CtorAlgorithm::RESTRICTED_MEMORY_ERATOSTHENES:
         break;
+    case CtorAlgorithm::NAIVE_ERATOSTHENES:
+    {
+        // set up an array of potential numbers that need to be checked for primliness.
+        const size_t num_array_size = limit - 31;
+        auto num_ptr = make_unique<Element_t[]>(num_array_size);
+        Element_t *num_array = num_ptr.get();
 
+        for (Element_t n = 32, i = 0; i < num_array_size;) {
+            num_array[i++] = n++;
+        }
+
+        Element_t tmp_mask = 0x80;
+        for (unsigned char i = 0; i < sizeof(Element_t) - 1; ++i) {
+            tmp_mask = tmp_mask * 256; // bit-shift 8L
+        }
+        const Element_t mark_mask = tmp_mask;
+
+        assert(mark_mask > limit && ~mark_mask & (limit ^ mark_mask) == limit); // ensure marked bit isn't used for any element <= limit
+
+        break;
+    }
     default:
         throw runtime_error("Something horked up with PrimeTable Ctor, default case hit");
     }

@@ -22,7 +22,7 @@ public:
     using Element_t = uint32_t;
     using PrimeContainer_t = std::vector<Element_t>;
 
-    enum class CtorAlgorithm { NAIVE = 0, RESTRICTED_MEMORY_ERATOSTHENES = 1};
+    enum class CtorAlgorithm { NAIVE, RESTRICTED_MEMORY_ERATOSTHENES, NAIVE_ERATOSTHENES};
 
     // Load PrimeTable From File, way way faster, should use this
     explicit PrimeTable(const private_key_dummy&, std::string filename = kPRIMETABLEBLOBNAME);
