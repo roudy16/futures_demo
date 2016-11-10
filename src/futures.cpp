@@ -7,6 +7,7 @@
 #include <cmath>
 #include <utility>
 #include <chrono>
+#include <thread>
 
 #include "prime_factorization.h"
 #include "prime_table.h"
@@ -75,8 +76,9 @@ int main(int argc, char* argv[]) {
         nums.push_back(i);
     }
 
+    unsigned int numThreads = std::thread::hardware_concurrency();
     auto t0 = high_resolution_clock::now();
-    parallel_factorize(pf_vec0, nums, 8);
+    parallel_factorize(pf_vec0, nums, numThreads);
     auto t1 = high_resolution_clock::now();
     auto span0 = duration_cast<duration<double>>(t1 - t0);
 
@@ -90,7 +92,7 @@ int main(int argc, char* argv[]) {
         cout << pf_vec0[i] << pf_vec1[i];
     }
 
-    cout << "8 jobs time: " << span0.count() << '\n';
+    cout << numThreads << " jobs time: " << span0.count() << '\n';
     cout << "1 job time: " << span1.count() << '\n';
 
     return 0;
